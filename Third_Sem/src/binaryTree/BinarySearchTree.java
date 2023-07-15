@@ -1,5 +1,7 @@
 package binaryTree;
 
+import java.util.ArrayList;
+
 import LinkedList.Node;
 import LinkedList.NodeUse;
 
@@ -148,7 +150,6 @@ public class BinarySearchTree {
 			}
 			bstMessenger left=isBST(root.left);
 			bstMessenger right = isBST(root.right);
-			
 			bstMessenger main = new bstMessenger();
 //			if(left.largest>root.data||right.smallest<root.data)
 //			{
@@ -194,7 +195,9 @@ public class BinarySearchTree {
 		{
 			//Convert the given BST into a SORTED Linked List;
 			
-			if(root==null)
+			/*
+			 * Utilises xtra space ->O(N).
+			 * if(root==null)
 			{
 				NodePair n = new NodePair();
 				n.head=null;
@@ -220,6 +223,34 @@ public class BinarySearchTree {
 				current.tail=right.tail;
 			}
 			return current;
+		}*/
+			if(root==null)
+			{
+				NodePair  ret = new NodePair();
+				ret.head=null;
+				ret.tail=null;
+				return ret;
+			}
+			NodePair left=convert(root.left);
+			NodePair right=convert(root.right);
+			NodePair main = new NodePair();
+			if(left.head!=null)
+				main.head=left.head;
+			else
+				main.head=root;
+			if(right.tail!=null)
+				main.tail=right.tail;
+			else
+				main.tail=root;
+			if(left.tail!=null)
+				left.tail.right=root;
+			if(right.head!=null)
+				root.right=right.head;
+			root.left=null;
+		//	main.tail.right=null;
+			return main;
+			
+			
 		}
 		
 //6						**Replace with Sum of greater nodes**
@@ -257,7 +288,7 @@ public class BinarySearchTree {
  */
 		
 	//T-O(N)   S-O(H)
-		public static int replace(BinaryTreeNode<Integer> root,int sum)
+		public static int replace(BinaryTreeNode<Integer> root,int sum)//replace data of each node with the sum of nodes grater than the current in the given BST
 		{
 			if(root==null)
 				return sum;
@@ -268,6 +299,48 @@ public class BinarySearchTree {
 			return sum;
 		}
 
+		
+//7
+		public static ArrayList<Integer> getPath(BinaryTreeNode<Integer> root,int data)
+		{
+			/*
+			 * Given a BST and an integer k. 
+			 * Find and return the path from the node with data k and root 
+			 * (if a node with data k is present in given BST) in a list. 
+			 * Return empty list otherwise.
+			 * Note: Assume that BST contains all unique elements.
+			 */
+			//T-O(H)
+			//S-O(H)
+			if(root==null)
+				return null;
+			if(root.data==data)
+			{
+				ArrayList<Integer> arr = new ArrayList<Integer>();
+				arr.add(root.data);
+				return arr;
+			}
+			if(root.data>data)
+			{
+				ArrayList<Integer> left =getPath(root.left, data);
+				if(left!=null)
+				{
+					left.add(root.data);
+					return left;
+				}
+				return left;
+			}
+			else 
+			{
+				ArrayList<Integer> right =getPath(root.right, data);
+				if(right!=null)
+				{
+					right.add(root.data);
+					return right;
+				}
+				return null;
+			}
+		}
 //----------------------------------------------------------------------------------------------------------
 	
 	
@@ -277,8 +350,8 @@ public class BinarySearchTree {
 		
 		//int a[]= {1,2,3,4,5,6,7};
 		BinaryTreeNode<Integer> root= n.takeInputLevelwise();
-		replace(root,0);
-		n.printLevelWise(root);
+		;
+		n.printLevelWise(convert(root).head);
 		///System.out.println(isBST_2(root,Integer.MIN_VALUE,Integer.MAX_VALUE));
 		
 }	

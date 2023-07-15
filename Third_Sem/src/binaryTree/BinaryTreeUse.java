@@ -1,8 +1,12 @@
 package binaryTree;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+
+import LinkedList.Node;
+import LinkedList.NodeUse;
 
 public class BinaryTreeUse {
 	
@@ -630,33 +634,33 @@ public class BinaryTreeUse {
 		if(root.data==target)
 		{
 			printAtDepthK(root, k);
-			return 0;
+			return 1;
 		}
 		int leftDistance=printAtKthDistance(root.left, target, k);
 		if(leftDistance!=-1)
 		{
-			if(leftDistance+1==k)
+			if(leftDistance==k)
 			{
 				System.out.println(root.data);
 				return leftDistance+1;
 			}
 			else
 			{
-				printAtDepthK(root.right,k-leftDistance-2);
+				printAtDepthK(root.right,k-leftDistance-1);
 				return leftDistance+1;
 			}
 		}
 		int rightDistance=printAtKthDistance(root.right, target, k);
 		if(rightDistance!=-1)
 		{
-			if(rightDistance+1==k)
+			if(rightDistance==k)
 			{
 				System.out.println(root.data);
 				return rightDistance+1;
 			}
 			else
 			{
-				printAtDepthK(root.left, k-rightDistance-2);
+				printAtDepthK(root.left, k-rightDistance-1);
 				return rightDistance+1;
 			}
 		}
@@ -705,11 +709,144 @@ public class BinaryTreeUse {
 	}
 
 	 */
-	
+//29
+	public static ArrayList<Node<Integer>> constructLevelWiseLL(BinaryTreeNode<Integer> root)
+	{
+		/*
+		 * Given a binary tree, write code to create a separate linked list for each level.
+		 *  You need to return the array which contains head of each level linked list.
+		 */
 		
+		Queue<BinaryTreeNode<Integer>> q = new LinkedList<BinaryTreeNode<Integer>>();
+		ArrayList<Node<Integer>>  a = new ArrayList<Node<Integer>>();
+		if(root==null)
+			return a;//checkmate😘😏
+		BinaryTreeNode<Integer> dummy = new BinaryTreeNode<Integer>(-1);
+		Node<Integer> head=null,tail=null;
+		q.add(root);
+		q.add(dummy);
+		while(q.isEmpty()!=true)
+		{
+			if(q.peek()==dummy)//delimeter;
+			{
+				a.add(head);
+				head=null;
+				tail=null;
+				q.poll();
+				if(q.isEmpty())
+				{
+					break;//prevent infinite loop;
+				}
+				else
+				{
+					q.add(dummy);
+				}
+			}
+			else
+			{
+				Node<Integer> current = new Node<Integer>(q.peek().data);
+				if(head==null)
+				{
+					head=current;
+					tail=current;
+				}
+				else
+				{
+					tail.next=current;
+					tail=current;
+				}
+				if(q.peek().left!=null)
+					q.add(q.peek().left);
+				if(q.peek().right!=null)
+					q.add(q.peek().right);
+				q.remove();
+			}
+		}
+		return a;
+		//Side note:-(Padhle sale alas mat kr👁️😒😒)
+		/*
+		 * if you want to solve the given problem without using LL node 
+		 * then what you can do is after adding the left and right to the queue set 
+		 * q.peek().left->null and q.peek().right-> to next member of queue 
+		 * until dummy node is not encountered.
+		 * this will create LL type structure from tree itself
+		 * Now,when dummy is reached,store the head of new created list in the 
+		 * array list and repeat the process  ......🔁🔁🔁🔁
+		 */
+		
+	}
+	
+//30
+	public static bstMessenger largestBSTSubtree(BinaryTreeNode<Integer> root)
+	{
+		/*
+		 * Given a Binary tree, find the largest BST subtree. 
+		 * That is, you need to find the BST with maximum height in the given 
+		 * binary tree. 
+		 * You have to return the height of largest BST.
+		 */
+		if(root==null)
+		{
+			bstMessenger b = new bstMessenger();
+			b.height=0;
+			b.isBalanced=true;
+			b.smallest=Integer.MAX_VALUE;
+			b.largest=Integer.MIN_VALUE;
+			return b;
+		}
+		bstMessenger left=largestBSTSubtree(root.left);
+		bstMessenger right=largestBSTSubtree(root.right);
+		bstMessenger mains = new bstMessenger();
+		mains.largest=Math.max(left.largest,Math.max(right.largest,root.data));
+		mains.smallest=Math.min(left.smallest,Math.min(right.smallest,root.data));
+		mains.isBalanced=false;
+		if(left.isBalanced==true&&right.isBalanced==true)//-----------------------------------(1)
+		{
+			if(left.largest<root.data&&right.smallest>=root.data)
+			{
+				mains.isBalanced=true;
+				mains.height=Math.max(left.height,right.height)+1;
+			}
+			else
+			{
+				mains.height=Math.max(left.height,right.height);
+			}
+		}
+		else
+			mains.height=Math.max(left.height,right.height);//-------------------------------(2)
+		//agr condition (1) false hai to iska mtlb ki tree ko bst search krne ka koi mtlb hi ni hai
+		//pr ye possible hai ki left ya right tree me se kisi ek me ek bada bst present ho 
+		//jbki vo khud bst na ho 
+		/*
+		   5
+		  / \
+		 6  10
+		/ \
+	   2  3
+	       \ 
+	       9
+	       yhan pr 6 root wala tree khud to bst nai hai pr na iske pas 3 root wala aisa tree hai
+	       jo zayda bada bst hai to iss case ko check krne k lie hum condtion number (2) lagae hai
+	       taki bhale tree khud bst na bhi ho pr kya pta  uske pas bada bst ho subtree me.
+	       6  ke subtree ki height-->2
+	       10 ke subtree ki height-->1
+	       to condn number (2) hai necessary
+	       aisa mt krna ki agr tree khud bst hai to hi uski height dere ho ..............
+		 */
+		return mains;
+	}
+	
+//-------------------------------------------------------------------------------------------------------		
+//									Driver code
+	
 	public static void main(String[] args) {
 		BinaryTreeNode<Integer> root =takeInputLevelwise();
-		printLevelWiseII(root);
+		System.out.println(largestBSTSubtree(root).height);
+	//	NodeUse n = new NodeUse();
+	//	ArrayList<Node<Integer>> a= constructLevelWiseLL(root);
+	//	System.out.println(a.isEmpty());
+	//	n.printRec(a.get(2));
+	//	printLevelWiseII(root);
 //		BinaryTreeNode<Integer> root = new BinaryTreeNode<>(1);
 //		BinaryTreeNode<Integer> left = new BinaryTreeNode<>(2);
 //		BinaryTreeNode<Integer> right = new BinaryTreeNode<>(3);

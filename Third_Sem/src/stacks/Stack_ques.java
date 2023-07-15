@@ -1,12 +1,9 @@
 package stacks;
-
-
 import java.util.Stack;
 
 public class Stack_ques {
 	
-//	1).
-	
+//1	
 	public static boolean balancedParanthesis(String s)
 	{
 		Stack<Character> stack = new Stack<>();
@@ -39,7 +36,7 @@ public class Stack_ques {
 	
 	}
 	
-	
+//2	
 	static boolean redundant(String s)//check for redundant brackets
 	{
 		/*int c=0;
@@ -93,9 +90,8 @@ public class Stack_ques {
 		stack.pop();
 		return c==0;
 	}
-	
-	
-//	2)....
+		
+//3
 	static void reverseStack(Stack<Integer> s,Stack<Integer> h)
 	{
 		
@@ -123,7 +119,7 @@ public class Stack_ques {
 		
 	}
 	
-	
+//4	
 	public static int minrev(String s) //minimum reversal req to balance 
 	{
 		/*
@@ -238,8 +234,8 @@ public class Stack_ques {
 		return step;
 		
 		}
-	
-	static void stockSpan()
+//5	
+	public static void stockSpan()
 	{
 			 	int price[]= {100, 80, 60, 70, 60, 75, 85,110};
 				Stack<Integer> s = new Stack<>();
@@ -264,8 +260,7 @@ public class Stack_ques {
 			for(int i=0;i<span.length;i++)
 				System.out.println(span[i]);
 	}	
-	
-	
+//6	
 	static int validLength(String s)
 	{
 		int l=0;
@@ -304,10 +299,7 @@ public class Stack_ques {
 				
 					
 			}
-
-		
-	
-	
+//00	
 	public static void main(String[] args) {
 //		Stack<Integer> s1=new Stack<>();
 //		Stack<Integer> h=new Stack<>();
