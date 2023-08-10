@@ -713,6 +713,8 @@ public class BinaryTreeUse {
 	public static ArrayList<Node<Integer>> constructLevelWiseLL(BinaryTreeNode<Integer> root)
 	{
 		/*
+		 * T-O(N)
+		 * S-O(H)
 		 * Given a binary tree, write code to create a separate linked list for each level.
 		 *  You need to return the array which contains head of each level linked list.
 		 */
@@ -784,6 +786,8 @@ public class BinaryTreeUse {
 		 * That is, you need to find the BST with maximum height in the given 
 		 * binary tree. 
 		 * You have to return the height of largest BST.
+		 * T-O(N) 
+		 * S-O(H)
 		 */
 		if(root==null)
 		{
@@ -835,13 +839,39 @@ public class BinaryTreeUse {
 		 */
 		return mains;
 	}
-	
+//------------------------------------------------------------------------------------------------------------------
+//31
+	public static BinaryTreeNode<Integer> buildInPost(int in[],int post[],int InS,int InE,int PostS,int PostE){
+		
+		//step 1 root data=>
+		if(InS>InE)
+			return null;
+		BinaryTreeNode<Integer> root = new BinaryTreeNode<Integer>(post[PostE]);
+		int index=-1;
+		for(int i=InS;i<=InE;i++)
+		{
+			if(in[i]==root.data)
+			{
+				index=i;
+				break;
+			}
+		}
+		int length=index-InS;
+		BinaryTreeNode<Integer> left=buildInPost(in, post, InS, index-1, PostS, PostS+length-1);
+		BinaryTreeNode<Integer> right=buildInPost(in, post, index+1, InE, PostS+length-1+1, PostE-1);
+		root.left=left;
+		root.right=right;
+		return root;
+	}
 //-------------------------------------------------------------------------------------------------------		
 //									Driver code
 	
 	public static void main(String[] args) {
-		BinaryTreeNode<Integer> root =takeInputLevelwise();
-		System.out.println(largestBSTSubtree(root).height);
+		//BinaryTreeNode<Integer> root =takeInputLevelwise();
+		//System.out.println(largestBSTSubtree(root).height);
+		int in[]= {4,2,5,1,3,6};
+		int post[]= {4,5,2,6,3,1};
+		printLevelWise(buildInPost(in, post, 0,in.length-1, 0,in.length-1));
 	//	NodeUse n = new NodeUse();
 	//	ArrayList<Node<Integer>> a= constructLevelWiseLL(root);
 	//	System.out.println(a.isEmpty());

@@ -341,6 +341,26 @@ public class BinarySearchTree {
 				return null;
 			}
 		}
+
+//8
+		public static void  PairSum(BinaryTreeNode<Integer> root, int sum)
+		{
+			/*
+			 * Given a binary search tree and an integer S,
+			 *  find pair of nodes in the BST which sum to S. 
+			 *  You can use extra space of the order of O(log n).
+			 * ->In a pair, print the smaller element first.
+			 */
+			
+			/*
+			 * Approach 1-
+			 * at each level/root
+			 * call fun findNode(sum-root.data)
+			 * if returns true, print the data.................
+			 * T-O(N H){N^2 or N logn}(depending on tree)
+			 */
+			
+		}
 //----------------------------------------------------------------------------------------------------------
 	
 	

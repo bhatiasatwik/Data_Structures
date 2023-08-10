@@ -85,10 +85,11 @@ public class BST
 			return node;
 		}
 		
-		public BinaryTreeNode<Integer> Delete(int x)
+		public boolean Delete(int x)
 		{
 			/*
-			 * 								THEORY:-
+			 * 								THEORY:-(Pdhlo bhaisab😏😏😘)
+			 * 
 			 * There can be 3 cases 
 			 * 1) if root==null
 			 * 		return null;
@@ -103,10 +104,75 @@ public class BST
 			 *  Note:- the replacement node can  either be inorder successor or inorder predecessor.
 			 *  ....................(max from left OR min from right)....................
 			 */
+			return DeleteHelper(root, x).isDelete;
 			
 		}
-		private BSTreturn DeleteHelper(BinaryTreeNode<Integer> root,int x)
+		private static int minimum(BinaryTreeNode<Integer> node)
 		{
-			
+			if(node==null)
+				return Integer.MAX_VALUE;
+			return Math.min(Math.min(minimum(node.left),minimum(node.left)),node.data);
+		}
+		private BSTreturn DeleteHelper(BinaryTreeNode<Integer> node,int x)
+		{
+			if(node==null)
+			{
+				BSTreturn b = new BSTreturn();
+				b.isDelete=false;
+				b.newRoot=null;
+				return b;
+			}
+			BSTreturn main = new BSTreturn();
+			if(node.data>x)
+			{
+				BSTreturn  l =DeleteHelper(node.left, x);
+				node.left=l.newRoot;
+				main.isDelete=l.isDelete;
+				main.newRoot=node;
+				return main;
+			}
+			else
+				if(node.data<x)
+			{
+				BSTreturn r = DeleteHelper(node.right, x);
+				node.right=r.newRoot;
+				main.isDelete=r.isDelete;
+				main.newRoot=node;
+				return main;
+			}
+				else		//here node with req data has been achieved
+				{
+					if(node.left==null&&node.right==null)//no child
+					{
+						main.isDelete=true;
+						main.newRoot=null;
+						return main;
+					}
+					else
+						if(node.left==null&&node.right!=null)//only right child
+						{
+							main.isDelete=true;
+							main.newRoot=node.right;
+							return main;
+							
+						}
+						else
+							if(node.left!=null&&node.right==null)//only left child present
+							{
+								main.isDelete=true;
+								main.newRoot=node.left;
+								return main;
+							}
+							else	//both child are present
+							{
+								int replace=minimum(node.right);//finding minimum of right subtree..
+								node.data=replace;
+								node.right=DeleteHelper(node.right,replace).newRoot;
+								main.isDelete=true;
+								main.newRoot=node;
+								return main;
+								
+							}
+				}
 		}
 	}
