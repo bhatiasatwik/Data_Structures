@@ -3,8 +3,8 @@ package priorityQueue;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class PQ {
-	ArrayList<Integer> a;
+public class PQ <T>{
+	/*ArrayList<Integer> a;
 	
 	public PQ()
 	{
@@ -43,5 +43,38 @@ public class PQ {
 			System.out.println(a.get(i));
 		}
 	}
-
+*/
+	ArrayList<PQ_element<T>> a;
+	public PQ() {
+		a=new ArrayList<PQ_element<T>>();
+	}
+	void insert(T data,int priority)
+	{
+		PQ_element<T> e = new PQ_element<T>(data, priority);
+		a.add(e);
+		if(a.size()==1)
+			return;
+		int ci=a.size()-1;
+		int pi=(ci-1)/2;
+		if(a.get(pi).priority<a.get(ci).priority)
+		{
+			return;
+		}
+		while(ci!=0)
+		{
+			if(a.get(pi).priority>a.get(ci).priority)
+			{
+				PQ_element<T> t=a.get(pi);
+				a.set(pi,a.get(ci));
+				a.set(ci, t);
+				ci=pi;
+				pi=(ci-1)/2;	
+			}
+		}
+		
+		
+		
+		
+	}
+	
 }
